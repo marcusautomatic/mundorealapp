@@ -25,7 +25,9 @@ describe('User Sign-up and Login', () => {
     cy.getBySel().should('exist')
 
     // logout
-    cy.userLogsOut().should('exist').click()
+    cy.userLogsOut().should('contain', 'Logout').click()
+    cy.location("pathname").should("eq", "/signin");
+    cy.get('.makeStyles-form-56').should('be.visible')
 
     
   });
