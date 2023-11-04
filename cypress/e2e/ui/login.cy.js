@@ -14,6 +14,7 @@ describe('User Sign-up and Login', () => {
   })
 
   it("should allow a visitor to sign-up, login, and logout", function () {
+    
     const userInfo = {
       firstName: "Bob",
       lastName: "Ross",
@@ -21,6 +22,7 @@ describe('User Sign-up and Login', () => {
       password: "s3cret",
     };
     
+    // Login
     cy.login(userInfo.username, userInfo.password)
     cy.getBySel().should('exist')
 
