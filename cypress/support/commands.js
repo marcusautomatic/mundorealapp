@@ -1,4 +1,5 @@
 const SIDENANAV = '[data-test="sidenav"] > .MuiPaper-root > :nth-child(1)'
+const LOGOUT_BUTTON = '[data-test="sidenav-signout"]'
 
 
 Cypress.Commands.add('login', (username, password) => {
@@ -13,8 +14,8 @@ Cypress.Commands.add('getBySel', function () {
     
 })
 
-Cypress.Commands.add('userLogsOut', function () {
-    return cy.get('[data-test="sidenav-signout"]')
+Cypress.Commands.add('getLogoutSel', function () {
+    return cy.get(`${LOGOUT_BUTTON}`)
     
 })
 

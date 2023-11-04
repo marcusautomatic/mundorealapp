@@ -13,7 +13,7 @@ describe('User Sign-up and Login', () => {
     
   })
 
-  it("should redirect to the home page after login", function () {
+  it("should allow a visitor to sign-up, login, and logout", function () {
     const userInfo = {
       firstName: "Bob",
       lastName: "Ross",
@@ -25,7 +25,7 @@ describe('User Sign-up and Login', () => {
     cy.getBySel().should('exist')
 
     // logout
-    cy.userLogsOut().should('contain', 'Logout').click()
+    cy.getLogoutSel().should('contain', 'Logout').click()
     cy.location("pathname").should("eq", "/signin");
     cy.get('.makeStyles-form-56').should('be.visible')
 
