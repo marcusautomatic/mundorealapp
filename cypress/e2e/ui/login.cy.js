@@ -1,11 +1,10 @@
 /// <reference types="cypress" />
 import { isMobile } from "../../support/utils";
 
-
 describe('User Sign-up and Login', () => {
+
   beforeEach(() => {
-    
-    // Given I am on the login page
+   
     cy.visit('/signin/')
   
   })
@@ -13,7 +12,6 @@ describe('User Sign-up and Login', () => {
 
   it("should allow a visitor to sign-up, login, and logout", function () {
    
-    
     const userInfo = {
       firstName: "Bob",
       lastName: "Ross",
@@ -22,7 +20,7 @@ describe('User Sign-up and Login', () => {
     };
 
     // Then the user should be on sign in page
-    cy.location("pathname").should("equal", "/signin");
+    cy.location("pathname").should("equal", "/signin")
     // When I enter my login credentials
     cy.login(userInfo.username, userInfo.password)
 
@@ -41,12 +39,12 @@ describe('User Sign-up and Login', () => {
 
   });
 
-  it.only("should display login errors", function () {
+  it("should display login errors", function () {
     // Given I am on the login page
     cy.visit("/");
     
     // When I enter my login credentials
-    cy.get("#username").type("Katharina_Bernier")
+    cy.get("#username").type("user")
     cy.get("#password").type("abcd").should("be.visible")
 
     // When I click on the login button
@@ -56,6 +54,21 @@ describe('User Sign-up and Login', () => {
     cy.errorMessage()
       .should('be.visible')
       .and("contain", "Username or password is invalid")
+     
+  });
+
+  it("Displaying login errors when a user attempts to log in without providing credentials", function () {
+    
+    // Given I am on the login page
+    cy.visit("/");
+
+    //  When the user tries to log in without entering their username or password
+    cy.get('.MuiButton-label').click()
+
+    // Then an error message should be displayed indicating that both username and password are required
+    cy.get('#username-helper-text')
+      .should("be.visible")
+      .and("contain", "Username is required")  
      
   });
   
