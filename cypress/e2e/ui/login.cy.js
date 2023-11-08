@@ -1,4 +1,5 @@
 /// <reference types="cypress" />
+import { isMobile } from "../../support/utils";
 
 
 describe('User Sign-up and Login', () => {
@@ -29,6 +30,9 @@ describe('User Sign-up and Login', () => {
     cy.getBySel().should('exist')
 
     // When I click on the logout button
+    if (isMobile()) {
+      cy.getBySel.click()
+    }
     cy.getLogoutSel().should('contain', 'Logout').click()
     cy.location("pathname").should("eq", "/signin");
 
