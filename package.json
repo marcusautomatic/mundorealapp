@@ -1,4 +1,12 @@
 {
+  "name": "cypress-e2e-framework",
+  "version": "1.0.0",
+  "description": "E2E Framework Testing Cypress",
+  "scripts": {
+    "test": "test",
+    "cypress:open": "cypress open",
+    "cypress:chrome": "cypress run --browser chrome --spec cypress/e2e/ui/*.cy.js"
+  },
   "devDependencies": {
     "cypress": "^13.4.0"
   }

@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
-import { isMobile } from "../../support/utils";
 
 describe('User Sign-up and Login', () => {
 
   beforeEach(() => {
    
+    // Given the user is on the login page
     cy.visit('/signin/')
   
   })
@@ -12,63 +12,63 @@ describe('User Sign-up and Login', () => {
 
   it("should allow a visitor to sign-up, login, and logout", function () {
    
-    const userInfo = {
-      firstName: "Bob",
-      lastName: "Ross",
-      username: "Katharina_Bernier",
-      password: "s3cret",
-    };
-
     // Then the user should be on sign in page
     cy.location("pathname").should("equal", "/signin")
-    // When I enter my login credentials
-    cy.login(userInfo.username, userInfo.password)
 
+    // When I enter my login credentials
+    cy['loginPage.fillFormAndSubmit']()
+    
     // Then I should be logged in and redirected to the dashboard
-    cy.getBySel().should('exist')
+    cy['dashboardPage.SideNavigatioElement']().should('be.visible')
 
     // When I click on the logout button
-    if (isMobile()) {
-      cy.getBySel.click()
-    }
-    cy.getLogoutSel().should('contain', 'Logout').click()
-    cy.location("pathname").should("eq", "/signin");
-
+    cy['dashboardPage.logoutButton']().click()
+    
     // And the user should be redirected to the login page
-    cy.get('.makeStyles-form-56').should('be.visible')
-
+    cy['loginPage.form']().should('be.visible')
+    
   });
 
-  it("should display login errors", function () {
-    // Given I am on the login page
-    cy.visit("/");
+  it("User enters invalid credentials ", function () {
+
+    // When the user enters an invalid username "user" and password "incorrect_password" and clicks Login
+    cy['loginPage.userEnterWrongCredentials']()
     
-    // When I enter my login credentials
-    cy.get("#username").type("user")
-    cy.get("#password").type("abcd").should("be.visible")
-
-    // When I click on the login button
-    cy.get('.MuiButton-label').click()
-
-    // And the user should be redirected to the login page
-    cy.errorMessage()
-      .should('be.visible')
-      .and("contain", "Username or password is invalid")
+    // And the error message should contain the text "Invalid username or password"
+    cy['loginPage.userGetErrorMessage']()
      
   });
 
-  it("Displaying login errors when a user attempts to log in without providing credentials", function () {
+  it("User enters a valid username but incorrect password", function () {
     
-    // Given I am on the login page
-    cy.visit("/");
+    // When the user enters an valid username "Katharina_Bernier" and password "incorrect_password" and clicks Login
+    cy['loginPage.userEnterValidUsernameIncorrectPassword']()
+    
+    // And the error message should contain the text "Invalid username or password"
+    cy['loginPage.userGetErrorMessage']()
+   
+     
+  });
 
-    //  When the user tries to log in without entering their username or password
-    cy.get('.MuiButton-label').click()
+  it("User enters a invalid username but correct password", function () {
+    
+    // When the user enters an valid username "incorrect_user" and password "s3cret" and clicks Login
+    cy['loginPage.userEnterInvalidUsernameCorrectPassword']()
+    
+    // And the error message should contain the text "Invalid username or password"
+    cy['loginPage.userGetErrorMessage']()
+   
+     
+  });
 
-    // Then an error message should be displayed indicating that both username and password are required
-    cy.get('#username-helper-text')
-      .should("be.visible")
-      .and("contain", "Username is required")  
+  it("User leaves username and password fields blank and clicks Login", function () {
+    
+    // When the user leaves the username and password fields blank and clicks Login
+    cy['loginPage.userLeavesUsername&PasswordBlank']()
+    
+    // And the error message should contain the text "Invalid username or password"
+    cy['loginPage.errorMessageUserIsRequired']()
+   
      
   });
   
